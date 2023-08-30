@@ -51,8 +51,6 @@ def findMN():
 k = int(input())
 
 arr = list(input().split())
-left = arr.count('>')
-right = arr.count('<')
 
 numb_mx = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 numb_mn = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
