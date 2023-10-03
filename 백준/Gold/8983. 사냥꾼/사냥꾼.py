@@ -11,17 +11,10 @@ def binarySearch(start, end, target):
         elif target > position[mid]:
             start = mid + 1
         else:
-            return position[mid]
-    if abs(position[mid] - target) >= abs(position[start] - target):
-        if abs(position[end] - target) > abs(position[start] - target):
-            return position[start]
-        else:
-            return position[end]
-    elif abs(position[mid] - target) < abs(position[start] - target):
-        if abs(position[mid] - target) < abs(position[end] -target):
-            return position[mid]
-        else:
-            return position[end]
+            return mid
+    return start
+
+
 
 M, N, L = map(int, input().split())
 # M 개의 사대 위치 (X좌표값)
@@ -33,8 +26,18 @@ cnt = 0
 if M > 1:
     for x, y in home:
         shoot = binarySearch(0, M - 1, x)
-        if abs(shoot - x) + y <= L:
-            cnt += 1
+        if 0 < shoot < M - 1:
+            tmp = [shoot - 1, shoot, shoot + 1]
+        elif 0 < shoot:
+            tmp = [shoot - 1, shoot]
+        elif shoot < M - 1:
+            tmp = [shoot, shoot + 1]
+        else:
+            tmp = [shoot]
+        for j in tmp:
+            if abs(position[j] - x) + y <= L:
+                cnt += 1
+                break
 else:
     for x, y in home:
         if abs(position[0] - x) + y <= L:
