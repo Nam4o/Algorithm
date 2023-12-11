@@ -1,61 +1,339 @@
-def operate(a, b, operator):
-    if operator == '+':
-        return a + b
-    elif operator == '-':
-        return a - b
-    elif operator == '*':
-        return a * b
-
-def calculate(stack1, stack2, priority):
-    for op in priority:
-        temp_stack1 = []
-        temp_stack2 = []
-        while stack2:
-            if stack2[0] == op:
-                result = operate(stack1.pop(0), stack1.pop(0), op)
-                stack1.insert(0, result)
-                stack2.pop(0)
-            else:
-                temp_stack1.append(stack1.pop(0))
-                temp_stack2.append(stack2.pop(0))
-
-        stack1 = temp_stack1 + stack1
-        stack2 = temp_stack2
-
-    return abs(stack1[0])
-
-def generate_priority(priority, operators, result):
-    if len(priority) == len(operators):
-        result.append(priority[:])
-        return
-    for op in operators:
-        if op not in priority:
-            priority.append(op)
-            generate_priority(priority, operators, result)
-            priority.pop()
-
 def solution(expression):
-    operators = ['+', '-', '*']
-    priorities = []
-    generate_priority([], operators, priorities)
-
     stack1 = []
     stack2 = []
 
     tmp = ''
-    for char in expression:
-        if char not in '*+-':
-            tmp += char
+    idx = 0
+    while idx < len(expression):
+
+        if expression[idx] not in '*+-':
+            tmp += expression[idx]
         else:
             stack1.append(int(tmp))
-            stack2.append(char)
+            stack2.append(expression[idx])
             tmp = ''
+        idx += 1
+        if idx == len(expression):
+            stack1.append(int(tmp))
 
-    stack1.append(int(tmp))
+    check = set(stack2)
+    check = list(check)
 
-    max_result = 0
-    for priority in priorities:
-        max_result = max(max_result, calculate(stack1[:], stack2[:], priority))
+    mx = 0
 
-    return max_result
+    if len(check) == 3:
+        for tc in range(6):
+            new1 = stack1[:]
+            new2 = stack2[:]
+            t = 0
+            while new2:
+                if tc == 0:
+                    if "*" in new2:
+                        if new2[t] == "*":
+                            new1[t] *= new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "*" not in new2:
+                            t = 0
+                    else:
+
+                        if "+" in new2:
+                            if new2[t] == "+":
+                                new1[t] += new1.pop(t + 1)
+                                new2.pop(t)
+                            else:
+                                t += 1
+                            if "+" not in new2:
+                                t = 0
+                        else:
+                            new1[t] -= new1.pop(t + 1)
+                            new2.pop(t)
+                elif tc == 1:
+                    if "+" in new2:
+                        if new2[t] == "+":
+                            new1[t] += new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "+" not in new2:
+                            t = 0
+                    else:
+
+                        if "*" in new2:
+                            if new2[t] == "*":
+                                new1[t] *= new1.pop(t + 1)
+                                new2.pop(t)
+                            else:
+                                t += 1
+                            if "*" not in new2:
+                                t = 0
+                        else:
+                            new1[t] -= new1.pop(t + 1)
+                            new2.pop(t)
+                elif tc == 2:
+                    if "-" in new2:
+                        if new2[t] == "-":
+                            new1[t] -= new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "-" not in new2:
+                            t = 0
+                    else:
+
+                        if "*" in new2:
+                            if new2[t] == "*":
+                                new1[t] *= new1.pop(t + 1)
+                                new2.pop(t)
+                            else:
+                                t += 1
+                            if "*" not in new2:
+                                t = 0
+                        else:
+                            new1[t] += new1.pop(t + 1)
+                            new2.pop(t)
+                elif tc == 3:
+                    if "-" in new2:
+                        if new2[t] == "-":
+                            new1[t] -= new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "-" not in new2:
+                            t = 0
+                    else:
+
+                        if "+" in new2:
+                            if new2[t] == "+":
+                                new1[t] += new1.pop(t + 1)
+                                new2.pop(t)
+                            else:
+                                t += 1
+                            if "+" not in new2:
+                                t = 0
+                        else:
+                            new1[t] *= new1.pop(t + 1)
+                            new2.pop(t)
+                elif tc == 4:
+                    if "+" in new2:
+                        if new2[t] == "+":
+                            new1[t] += new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "+" not in new2:
+                            t = 0
+                    else:
+
+                        if "-" in new2:
+                            if new2[t] == "-":
+                                new1[t] -= new1.pop(t + 1)
+                                new2.pop(t)
+                            else:
+                                t += 1
+                            if "-" not in new2:
+                                t = 0
+                        else:
+                            new1[t] *= new1.pop(t + 1)
+                            new2.pop(t)
+                if tc == 5:
+                    if "*" in new2:
+                        if new2[t] == "*":
+                            new1[t] *= new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "*" not in new2:
+                            t = 0
+                    else:
+
+                        if "-" in new2:
+                            if new2[t] == "-":
+                                new1[t] -= new1.pop(t + 1)
+                                new2.pop(t)
+                            else:
+                                t += 1
+                            if "-" not in new2:
+                                t = 0
+                        else:
+                            new1[t] += new1.pop(t + 1)
+                            new2.pop(t)
+
+            if abs(new1[0]) > mx:
+                mx = abs(new1[0])
+
+    elif len(check) == 2:
+        for tc in range(6):
+            new1 = stack1[:]
+            new2 = stack2[:]
+            t = 0
+            while new2:
+                if tc == 0 and "*" in check:
+                    if "*" in new2:
+                        if new2[t] == "*":
+                            new1[t] *= new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "*" not in new2:
+                            t = 0
+                    else:
+
+                        if "+" in check:
+
+                            new1[t] += new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+
+                        else:
+                            new1[t] -= new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+                elif tc == 1 and "+" in check:
+                    if "+" in new2:
+                        if new2[t] == "+":
+                            new1[t] += new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "+" not in new2:
+                            t = 0
+                    else:
+
+                        if "*" in check:
+                            new1[t] *= new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+
+                        else:
+                            new1[t] -= new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+                elif tc == 2 and "-" in check:
+                    if "-" in new2:
+                        if new2[t] == "-":
+                            new1[t] -= new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "-" not in new2:
+                            t = 0
+                    else:
+                        if "*" in check:
+                            new1[t] *= new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+                        else:
+                            new1[t] += new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+                elif tc == 3 and "-" in check:
+                    if "-" in new2:
+                        if new2[t] == "-":
+                            new1[t] -= new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "-" not in new2:
+                            t = 0
+                    else:
+                        if "+" in check:
+                            new1[t] += new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+                        else:
+                            new1[t] *= new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+                elif tc == 4 and "*" in check:
+                    if "*" in new2:
+                        if new2[t] == "*":
+                            new1[t] *= new1.pop(t + 1)
+                            new2.pop(t)
+
+                        else:
+                            t += 1
+                        if "*" not in new2:
+                            t = 0
+                    else:
+
+                        if "-" in check:
+
+                            new1[t] -= new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+
+                        else:
+                            new1[t] += new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+                elif tc == 5 and "+" in check:
+                    if "+" in new2:
+                        if new2[t] == "+":
+                            new1[t] += new1.pop(t + 1)
+                            new2.pop(t)
+                        else:
+                            t += 1
+                        if "+" not in new2:
+                            t = 0
+                    else:
+
+                        if "-" in check:
+                            new1[t] -= new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+
+                        else:
+                            new1[t] *= new1.pop(t + 1)
+                            new2.pop(t)
+                            if not new2:
+                                if abs(new1[0]) > mx:
+                                    mx = abs(new1[0])
+
+                else:
+                    break
+
+
+    elif len(check) == 1:
+        new1 = stack1[:]
+        new2 = stack2[:]
+
+        while new2:
+            if check[-1] == "*":
+                new1[0] *= new1.pop(1)
+                new2.pop()
+            elif check[-1] == "+":
+                new1[0] += new1.pop(1)
+                new2.pop()
+            else:
+                new1[0] -= new1.pop(1)
+                new2.pop()
+        if abs(new1[0]) > mx:
+            mx = abs(new1[0])
+
+    answer = 0
+    return mx
 
