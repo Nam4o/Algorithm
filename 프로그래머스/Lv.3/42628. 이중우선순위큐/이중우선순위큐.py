@@ -10,7 +10,7 @@ def solution(operations):
     for o in operations:
         tmp = o.split(" ")
         tmp[1] = int(tmp[1])
-        # print(tmp[1])
+
         if tmp[0] == "I":
             if tmp[1] < 0:
                 heapq.heappush(low, tmp[1])
