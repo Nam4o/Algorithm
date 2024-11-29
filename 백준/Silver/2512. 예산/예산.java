@@ -14,24 +14,29 @@ public class Main {
 
         budget = new int[n];
 
+        int mx = 0;
+
         st = new StringTokenizer(br.readLine());
         for(int i = 0; i < n; i++) {
             budget[i] = Integer.parseInt(st.nextToken());
+            if(budget[i] > mx) {
+                mx = budget[i];
+            }
         }
 
         st = new StringTokenizer(br.readLine());
         int limit = Integer.parseInt(st.nextToken());
 
-        Arrays.sort(budget);
+//        Arrays.sort(budget);
 
-        binarySearch(limit);
+        binarySearch(limit, mx);
         System.out.println(result);
     }
 
 
-    static void binarySearch(int limit){
+    static void binarySearch(int limit, int mx){
 
-        int start = 1, end = budget[n - 1];
+        int start = 1, end = mx;
 
 
         while (start <= end) {
