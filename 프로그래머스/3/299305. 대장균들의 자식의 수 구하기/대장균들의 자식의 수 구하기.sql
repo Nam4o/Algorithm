@@ -1,9 +1,8 @@
-select A.ID ID, COUNT(B.ID) AS CHILD_COUNT
-
+select A.ID, count(B.ID) as CHILD_COUNT
 from ECOLI_DATA A
+left join ECOLI_DATA B
+on A.ID = B.PARENT_ID
+group by A.ID
+order by A.ID;
 
-LEFT JOIN ECOLI_DATA B
-ON A.ID = B.PARENT_ID
-GROUP BY 1
-ORDER BY 1
-;
+
